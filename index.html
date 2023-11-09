@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>color-Challange</title>
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <style>
+        @font-face {
+    font-family: comic;
+    src: url(comic.ttf);
+}
+        body{
+    margin: 0;
+    font-family: comic;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-flow: row wrap;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    background-color: rgba(170, 220, 255, 1);
+}
+.flexDP{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-flow: row wrap;
+}
+button{
+    border: none;
+}
+.show{
+    display: block;
+}
+.hide{
+    display: none;
+}
+h1{
+    width: 100%;
+    text-align: center;
+}
+.gameContainer{
+    width:  70%;
+    min-width: 700px;
+    max-width: 800px;
+    /* border: 1px solid red; */
+    background-color: rgb(210, 210, 210);
+    border-radius: 4px;
+    box-shadow:  2px 2px 8px rgba(0, 0, 0, 0.6);
+   
+}
+.boxContainer{
+    padding: 8px;
+    margin: 8px;
+    /* border: 1px solid blue; */
+    width: 100%;
+    gap: 80px;
+    /* box-shadow: inset 2px 2px 8px rgba(0, 0, 0, 0.6); */
+    border-radius: 4px;
+    position: relative;
+}
+
+
+.box{
+    width: 200px;
+    height: 150px;
+    /* border: 1px solid green; */
+    
+    border-radius: 4px;
+}
+#originBox{
+    box-shadow:  -2px 2px 8px rgba(0, 0, 0, 0.6);
+}
+#userBox{
+    box-shadow:  2px 2px 8px rgba(0, 0, 0, 0.6);
+}
+#arrow{
+    width: 32px;
+    transform: rotate(180deg);
+}
+.left,.right{
+    width: 49%;
+    /* border: 1px solid orange; */
+    height: 150px;
+}
+.rangeHolder{
+    width: 100%;
+    /* border: 1px solid green; */
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    height: 40px;
+    box-shadow: inset 0px 3px 8px rgba(0, 0, 0, 0.6);
+    border-radius: 4px;
+    background-color: transparent;
+    
+}
+input[type=range]{
+    display: block;
+    width: 70%;
+}
+.colUserT{
+    color: rgb(0, 0, 0);
+    /* text-shadow:  0px 0px 4px rgba(0, 0, 0, 0.3); */
+    font-weight: 800;
+    width: 50px;
+    text-align: center;
+}
+.colUserH{
+    color: #999;
+    /* text-shadow:  0px 0px 1px rgba(0, 0, 0, 0.3); */
+    font-weight: 800;
+}
+.infoHolder{
+    height: 30%;
+    width: 90%;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: start;
+    align-items: center;
+    white-space: nowrap;
+}
+.info{
+    display: inline;
+    width: 100%;
+}
+
+.score{
+    display: inline;
+    margin: 0 8px;
+}
+#bestP{
+    font-weight: bold;
+    box-shadow:  3px 3px 8px rgba(0, 0, 0, 0.6);
+    padding: 4px 16px;
+    background-color: rgb(0, 0, 0);
+    border-radius: 8px;
+    background-image:  url(img/fire.gif) ;
+    background-size: cover;
+    color: #fff;
+    background-position: center ;
+    /* background-attachment: fixed; */
+    mix-blend-mode: overlay ;
+    white-space: nowrap;
+
+}
+
+.btn{
+    padding: 8px 16px;
+    width: 100px;
+    height: 40px;
+    color: #ddd;
+    font-family: cursive;
+    text-align: center;
+    line-height: 40px;
+    font-size: 20px;
+    font-weight: bolder;
+    border-radius: 4px;
+    box-shadow:  0px 0px 4px rgba(0, 0, 0, 0.6);
+    background-color: green;
+}
+.btn:hover{
+    filter: brightness(0.9);
+    cursor: pointer;
+    color: #fff;
+}
+
+.rgbContainer{
+    position: absolute;
+    display: flex;
+    gap: 24px;
+    bottom: 0;
+}
+.checkBox{
+    width: 20px;
+    height: 20px;
+    padding: 12px;
+    /* border: 1px solid black; */
+    text-align: center;
+    background-color: #aaaaaa;
+    font-weight: bolder;
+    border-radius: 50%;
+    line-height: 20px;
+    box-shadow:  0px 0px 4px rgba(0, 0, 0, 0.6);
+}
+.condition{
+    position: absolute;
+    top: 0;
+    width: 280px;
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+}
+.start{
+    background-color: #22223b;
+}
+.check{
+    background-color:#3a86ff ;
+}
+    </style>
+</head>
+<body >
+
+    <div id="getReady" class="getReady flexDP">
+        <h1 id="title">!!! Match the Amount Of colors(RGB) To Win !!!</h1>
+        
+    </div>
+
+    <div id="gameContainer" class="gameContainer flexDP">
+
+        <div class="boxContainer flexDP">
+            <div id="userBox" class="box"></div>
+            <!-- <h1 id="arrow">=></h1> -->
+            <div id="start" class="btn start show">START</div>
+            <div id="check" class="btn check hide">CHECK</div>
+            <span id="condition" class="condition">Turn On Game Hit Immediately <br> Hit Start </span>
+            <div class="rgbContainer">
+                <div id="r" class="checkBox">R</div>
+                <div id="g" class="checkBox">G</div>
+                <div id="b" class="checkBox">B</div>
+            </div>
+          
+            <div id="originBox" class="box"></div>
+        </div>
+        
+
+        <div class="left flexDP">
+
+            
+            <div class="rangeHolder">
+                <h2 class="colUserH">R</h2>
+                <input type="range" value="0" min="0" max="255" step="1" id="colorR" class="userRange" onchange="">
+                <output id="colUserTR" class="colUserT"></output>
+            </div>
+
+            
+            <div class="rangeHolder">
+                <h2 class="colUserH">G</h2>
+                <input type="range" value="0" min="0" step="1" max="255" id="colorG" class="userRange" onchange="">
+                <output id="colUserTG" class="colUserT"></output> 
+            </div>
+
+            
+            <div class="rangeHolder">
+                <h2 class="colUserH">B</h2>
+                <input type="range" value="0" min="0" max="255" step="1" id="colorB" class="userRange" onchange="">
+                <output id="colUserTB" class="colUserT"></output>
+            </div>
+            
+        </div>
+
+        <div class="right flexDP">
+            
+            <div class="infoHolder"><h2 class="info">score: <h3 id="score" class="score">0</h3></h2></div>
+            <div class="infoHolder"><h2 class="info">Turn Remaning: <h3 id="turn" class="score">10</h3></h2></div>
+            <div class="infoHolder"><h2 class="info">Best Score:  <h3 id="bestP" class="score">EvoNick-IR</h3><h3 id="best" class="score">0</h3></h2></div>
+            
+            
+
+        </div>
+
+        
+        
+        
+    </div>
+
+    
+    
+    
+
+    <!-- <script src="index.js"></script> -->
+    <script>
+        /////////////////vars////////////////////
+
+const originBox = document.querySelector("#originBox");
+const userBox = document.querySelector("#userBox");
+const colorR = document.getElementById("colorR");
+const userRT = document.getElementById("colUserTR");
+const colorG = document.getElementById("colorG");
+const userGT = document.getElementById("colUserTG");
+const colorB = document.getElementById("colorB");
+const userBT = document.getElementById("colUserTB");
+const check = document.getElementById("check");
+const checkR = document.getElementById("r");
+const checkG = document.getElementById("g");
+const checkB = document.getElementById("b");
+const score = document.getElementById("score");
+const turn = document.getElementById("turn");
+const bestP = document.getElementById("bestP");
+const condition = document.getElementById("condition");
+const start = document.getElementById("start");
+
+
+
+
+
+////////////////////////////////////////
+
+
+
+//////////////////origin colors///////////////////
+
+function randomColor(){
+    return parseInt(Math.floor(Math.random() * 255))
+}
+
+
+////////////////////////////////////////
+
+
+///////////////////ui range nums/////////////////////
+userRT.innerHTML = colorR.value;
+userGT.innerHTML = colorG.value;
+userBT.innerHTML = colorB.value;
+
+function changeColor(){
+    let red = colorR.value
+    let green = colorG.value
+    let blue = colorB.value
+    let color = 'rgb('+ red + ',' + green + ',' + blue + ')';
+    userBox.style.backgroundColor = color;
+    userRT.innerHTML = red;
+    userGT.innerHTML = green;
+    userBT.innerHTML = blue;
+     
+}
+
+
+
+colorR.addEventListener('input' , changeColor)
+colorG.addEventListener('input' , changeColor)
+colorB.addEventListener('input' , changeColor)
+
+
+let newScore = 0
+let turnRem = 0
+turn.innerHTML = turnRem
+
+ check.addEventListener('click' , ()=>{
+   
+    let red = parseInt(colorR.value)
+    let green = parseInt(colorG.value)
+    let blue = parseInt(colorB.value)
+        
+        condition.style.fontSize = "32px"
+        condition.innerHTML = "Try Again"
+
+    if(red - orgRed >= -5 && red - orgRed <= 5){
+            checkR.style.backgroundColor = "green"
+        }
+    if(green - orgGreen >= -5 && green - orgGreen <= 5){
+            checkG.style.backgroundColor = "green"
+        }
+    if(blue - orgBlue >= -5 && blue - orgBlue <= 5){
+            checkB.style.backgroundColor = "green"
+        }
+    
+    if (red - orgRed >= -5 && red - orgRed <=5 && green - orgGreen >= -5 && green - orgGreen <=5 && blue - orgBlue >= -5 && blue - orgBlue <=5 && turnRem >=0){
+        newScore++;
+        orgRed = randomColor()
+        orgGreen = randomColor()
+        orgBlue = randomColor()
+        originBox.style.backgroundColor= `rgb(${orgRed},${orgGreen},${orgBlue})`
+        console.log("red: "+orgRed+"  green: "+orgGreen+"  blue: " +orgBlue);
+        condition.style.fontSize = "20px"
+        condition.innerHTML = "So Good"
+        checkR.style.backgroundColor = "#cf2d2d"
+        checkG.style.backgroundColor = "#cf2d2d"
+        checkB.style.backgroundColor = "#cf2d2d"
+        turnRem = 5
+
+    }else if (turnRem <= 0 ){
+        condition.style.fontSize = "18px"
+        condition.innerHTML = "You Lose . Hit The Start Button To Try At First"
+        newScore = 0
+        start.classList.remove("hide")
+        start.classList.add("show")
+        check.classList.remove("show")
+        check.classList.add("hide")
+        beforInter = setInterval(beforStart, 500);
+        checkR.style.backgroundColor = "#aaaaaa"
+        checkG.style.backgroundColor = "#aaaaaa"
+        checkB.style.backgroundColor = "#aaaaaa"
+
+    }else {turnRem--}
+    
+    score.innerHTML = newScore
+    turn.innerHTML = turnRem
+
+    })
+
+
+    start.addEventListener('click' , ()=>{
+        turnRem = 5
+        turn.innerHTML = turnRem
+        clearInterval(beforInter)
+        start.classList.remove("show")
+        start.classList.add("hide")
+        check.classList.remove("hide")
+        check.classList.add("show")
+        changeColor()
+        orgRed = randomColor()
+        orgGreen = randomColor()
+        orgBlue = randomColor()
+        originBox.style.backgroundColor= `rgb(${orgRed},${orgGreen},${orgBlue})`
+        console.log("red: "+orgRed+"  green: "+orgGreen+"  blue: " +orgBlue);
+
+        condition.style.fontSize = "12px"
+        condition.innerHTML = " Start Whith Draging The RGB Sliders To Match The Color Of The Left Box To The Right One, Then click On Check"
+        checkR.style.backgroundColor = "#cf2d2d"
+        checkG.style.backgroundColor = "#cf2d2d"
+        checkB.style.backgroundColor = "#cf2d2d"
+    })
+
+////////////////////////////////////////
+function beforStart(){
+    let orgRed = randomColor()
+    let orgGreen = randomColor()
+    let orgBlue = randomColor()
+    let userRed = randomColor()
+    let userGreen = randomColor()
+    let userBlue = randomColor()
+    originBox.style.backgroundColor= `rgb(${orgRed},${orgGreen},${orgBlue})`
+    userBox.style.backgroundColor= `rgb(${userRed},${userGreen},${userBlue})`
+}
+
+
+beforInter = setInterval(beforStart, 500);
+
+    </script>
+</body>
+</html>
